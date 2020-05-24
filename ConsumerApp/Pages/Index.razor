@@ -1,0 +1,32 @@
+﻿@page "/"
+@using CoolComponents
+@inject IJSRuntime JS
+<div>
+<BigGreenButtonClicker 
+  Title="Click me and be happy!"
+  OnClickCallback="OnClick" 
+  ResultAnswer="@resultAnswer">
+</BigGreenButtonClicker>
+</div>
+@code
+{
+  string happy = ":-)";
+  string sad = ":-(";
+  EditContext editContext;
+  string resultAnswer = string.Empty;
+  async void OnClick(MouseEventArgs arg)
+  {
+    var task = ExampleJsInterop.Prompt(JS, "Give the answer to be happy!");
+    resultAnswer = await task;
+    var smile = string.IsNullOrWhiteSpace(resultAnswer) ? sad : happy;
+    resultAnswer = $"{resultAnswer} {smile}";
+    editContext.NotifyFieldChanged(editContext.Field(nameof(resultAnswer)));
+  }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    editContext = new EditContext(this);
+    editContext.OnFieldChanged += (sender, args) => StateHasChanged();
+  }
+}

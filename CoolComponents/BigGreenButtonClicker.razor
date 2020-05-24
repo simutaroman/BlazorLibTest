@@ -1,0 +1,17 @@
+﻿<div class="my-component">
+    <div class="my-buttonkeeper">
+        <button class="my-button" @onclick="OnClickCallback">@Title</button>
+    </div>
+</div>
+<div>Your answer: @ResultAnswer</div>
+@code
+{
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ResultAnswer { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+}
